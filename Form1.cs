@@ -16,8 +16,10 @@ namespace TrabalhoRedes
         private string Servidor { get { return tbSistema.Text; } }
         private string Usuario { get { return tbUsuario.Text; } } //4936 | 9924
         private string Senha { get { return tbSenha.Text; } } //aswpa | esmtk
+        private bool ConectadoTCP { get; set; } = false;
+        private bool ConectadoUDP { get; set; } = false;
 
-        private TcpClient clientSocket { get; set; }
+        private TcpClient tcpClient { get; set; }
 
         private UdpClient udpClient { get; set; }
 
@@ -29,46 +31,104 @@ namespace TrabalhoRedes
         private void Form1_Load(object sender, EventArgs e)
         {
             rtbLog.AppendText("Iniciou o programa...\r\n");
-            clientSocket = new TcpClient();
+            tcpClient = new TcpClient();
             udpClient = new UdpClient();
         }
 
         private void btnConectar_Click(object sender, EventArgs e)
         {
-            clientSocket.Connect(Servidor, 1012);
+            try
+            {
+                ConectarTCP();
 
-            var serverStream = clientSocket.GetStream();
-            byte[] outStream = Encoding.Default.GetBytes($"GET USERS {Usuario}:{Senha}");
-            serverStream.Write(outStream, 0, outStream.Length);
-            serverStream.Flush();
+                rtbLog.AppendText("Conectando...\r\n");
+                var serverStream = tcpClient.GetStream();
+                byte[] outStream = Encoding.Default.GetBytes($"GET USERS {Usuario}:{Senha}");
+                serverStream.Write(outStream, 0, outStream.Length);
+                serverStream.Flush();
 
-            byte[] inStream = new byte[10025];
-            serverStream.Read(inStream, 0, clientSocket.ReceiveBufferSize);
-            string returnData = Encoding.Default.GetString(inStream);
-            rtbLog.AppendText(returnData + "\r\n\r\n");
+                byte[] inStream = new byte[tcpClient.ReceiveBufferSize];
+                serverStream.Read(inStream, 0, tcpClient.ReceiveBufferSize);
+                string returnData = Encoding.Default.GetString(inStream);
+                rtbLog.AppendText(returnData + "\r\n\r\n");
+            }
+            catch (Exception exc)
+            {
+                rtbLog.AppendText($"Erro ao conectar: {exc.ToString()}\r\n\r\n");
+            }
         }
 
         private void btnMensagem_Click(object sender, EventArgs e)
         {
-            udpClient.Connect(Servidor, 1011);
-
-            byte[] outStream = Encoding.Unicode.GetBytes($"SEND MESSAGE {Usuario}: {Senha}:0:Hello World!");
-            udpClient.Send(outStream, outStream.Length);
+            try
+            {
+                ConectarUDP();
+                rtbLog.AppendText("Enviando mensagem...\r\n");
+                byte[] outStream = Encoding.UTF8.GetBytes($"SEND MESSAGE {Usuario}:{Senha}:0:Hello World!");
+                int result = udpClient.Send(outStream, outStream.Length);
+            }
+            catch (Exception exc)
+            {
+                rtbLog.AppendText($"Erro ao enviar mensagem: {exc.ToString()}\r\n\r\n");
+            }
         }
 
         private void btnGetMensagens_Click(object sender, EventArgs e)
         {
-            clientSocket.Connect(Servidor, 1012);
+            try
+            {
+                ConectarTCP();
+                rtbLog.AppendText("Buscando mensagens...\r\n");
+                var serverStream = tcpClient.GetStream();
+                byte[] outStream = Encoding.Default.GetBytes($"GET MESSAGE {Usuario}:{Senha}");
+                serverStream.Write(outStream, 0, outStream.Length);
+                serverStream.Flush();
 
-            var serverStream = clientSocket.GetStream();
-            byte[] outStream = Encoding.Default.GetBytes($"GET MESSAGE {Usuario}:{Senha}");
-            serverStream.Write(outStream, 0, outStream.Length);
-            serverStream.Flush();
+                byte[] inStream = new byte[tcpClient.ReceiveBufferSize];
+                serverStream.Read(inStream, 0, tcpClient.ReceiveBufferSize);
+                string returnData = Encoding.Default.GetString(inStream);
+                rtbLog.AppendText(returnData + "\r\n\r\n");
+            }
+            catch (Exception exc)
+            {
+                rtbLog.AppendText($"Erro ao buscar mensagens: {exc.ToString()}\r\n\r\n");
+            }
+        }
 
-            byte[] inStream = new byte[10025];
-            serverStream.Read(inStream, 0, clientSocket.ReceiveBufferSize);
-            string returnData = Encoding.Default.GetString(inStream);
-            rtbLog.AppendText(returnData + "\r\n\r\n");
+        private void ConectarTCP()
+        {
+            if (!ConectadoTCP)
+            {
+                tcpClient.Connect(Servidor, 1012);
+                ConectadoTCP = true;
+            }
+        }
+
+        private void FecharTCP()
+        {
+            if (ConectadoTCP)
+            {
+                tcpClient.Close();
+                ConectadoTCP = false;
+            }
+        }
+
+        private void ConectarUDP()
+        {
+            if (!ConectadoUDP)
+            {
+                udpClient.Connect(Servidor, 1011);
+                ConectadoUDP = true;
+            }
+        }
+
+        private void FecharUDP()
+        {
+            if (ConectadoUDP)
+            {
+                tcpClient.Close();
+                ConectadoUDP = false;
+            }
         }
     }
 }
