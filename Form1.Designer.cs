@@ -34,11 +34,11 @@
             this.tbSistema = new System.Windows.Forms.TextBox();
             this.tbUsuario = new System.Windows.Forms.TextBox();
             this.tbSenha = new System.Windows.Forms.TextBox();
-            this.lbLog = new System.Windows.Forms.Label();
-            this.rtbLog = new System.Windows.Forms.RichTextBox();
+            this.lbListaUsuarios = new System.Windows.Forms.Label();
             this.btnConectar = new System.Windows.Forms.Button();
             this.btnMensagem = new System.Windows.Forms.Button();
             this.btnGetMensagens = new System.Windows.Forms.Button();
+            this.listaUsuarios = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // lbSistema
@@ -70,49 +70,48 @@
             // 
             // tbSistema
             // 
+            this.tbSistema.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbSistema.Location = new System.Drawing.Point(65, 12);
             this.tbSistema.Name = "tbSistema";
-            this.tbSistema.Size = new System.Drawing.Size(505, 20);
+            this.tbSistema.Size = new System.Drawing.Size(829, 20);
             this.tbSistema.TabIndex = 3;
             this.tbSistema.Text = "larc.inf.furb.br";
             // 
             // tbUsuario
             // 
+            this.tbUsuario.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbUsuario.Location = new System.Drawing.Point(65, 38);
             this.tbUsuario.Name = "tbUsuario";
-            this.tbUsuario.Size = new System.Drawing.Size(505, 20);
+            this.tbUsuario.Size = new System.Drawing.Size(829, 20);
             this.tbUsuario.TabIndex = 4;
-            this.tbUsuario.Text = "9924";
+            this.tbUsuario.Text = "4936";
             // 
             // tbSenha
             // 
+            this.tbSenha.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbSenha.Location = new System.Drawing.Point(65, 64);
             this.tbSenha.Name = "tbSenha";
-            this.tbSenha.Size = new System.Drawing.Size(505, 20);
+            this.tbSenha.Size = new System.Drawing.Size(829, 20);
             this.tbSenha.TabIndex = 5;
-            this.tbSenha.Text = "esmtk";
+            this.tbSenha.Text = "aswpa";
             this.tbSenha.UseSystemPasswordChar = true;
             // 
-            // lbLog
+            // lbListaUsuarios
             // 
-            this.lbLog.AutoSize = true;
-            this.lbLog.Location = new System.Drawing.Point(12, 100);
-            this.lbLog.Name = "lbLog";
-            this.lbLog.Size = new System.Drawing.Size(28, 13);
-            this.lbLog.TabIndex = 6;
-            this.lbLog.Text = "Log:";
-            // 
-            // rtbLog
-            // 
-            this.rtbLog.Location = new System.Drawing.Point(12, 116);
-            this.rtbLog.Name = "rtbLog";
-            this.rtbLog.Size = new System.Drawing.Size(558, 134);
-            this.rtbLog.TabIndex = 7;
-            this.rtbLog.Text = "";
+            this.lbListaUsuarios.AutoSize = true;
+            this.lbListaUsuarios.Location = new System.Drawing.Point(12, 100);
+            this.lbListaUsuarios.Name = "lbListaUsuarios";
+            this.lbListaUsuarios.Size = new System.Drawing.Size(82, 13);
+            this.lbListaUsuarios.TabIndex = 6;
+            this.lbListaUsuarios.Text = "Usuários ativos:";
             // 
             // btnConectar
             // 
-            this.btnConectar.Location = new System.Drawing.Point(333, 90);
+            this.btnConectar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnConectar.Location = new System.Drawing.Point(819, 90);
             this.btnConectar.Name = "btnConectar";
             this.btnConectar.Size = new System.Drawing.Size(75, 23);
             this.btnConectar.TabIndex = 8;
@@ -122,7 +121,8 @@
             // 
             // btnMensagem
             // 
-            this.btnMensagem.Location = new System.Drawing.Point(495, 90);
+            this.btnMensagem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnMensagem.Location = new System.Drawing.Point(685, 90);
             this.btnMensagem.Name = "btnMensagem";
             this.btnMensagem.Size = new System.Drawing.Size(75, 23);
             this.btnMensagem.TabIndex = 9;
@@ -132,7 +132,8 @@
             // 
             // btnGetMensagens
             // 
-            this.btnGetMensagens.Location = new System.Drawing.Point(414, 90);
+            this.btnGetMensagens.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGetMensagens.Location = new System.Drawing.Point(604, 90);
             this.btnGetMensagens.Name = "btnGetMensagens";
             this.btnGetMensagens.Size = new System.Drawing.Size(75, 23);
             this.btnGetMensagens.TabIndex = 10;
@@ -140,16 +141,24 @@
             this.btnGetMensagens.UseVisualStyleBackColor = true;
             this.btnGetMensagens.Click += new System.EventHandler(this.btnGetMensagens_Click);
             // 
+            // listaUsuarios
+            // 
+            this.listaUsuarios.FormattingEnabled = true;
+            this.listaUsuarios.Location = new System.Drawing.Point(15, 116);
+            this.listaUsuarios.Name = "listaUsuarios";
+            this.listaUsuarios.Size = new System.Drawing.Size(227, 342);
+            this.listaUsuarios.TabIndex = 11;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(582, 262);
+            this.ClientSize = new System.Drawing.Size(906, 470);
+            this.Controls.Add(this.listaUsuarios);
             this.Controls.Add(this.btnGetMensagens);
             this.Controls.Add(this.btnMensagem);
             this.Controls.Add(this.btnConectar);
-            this.Controls.Add(this.rtbLog);
-            this.Controls.Add(this.lbLog);
+            this.Controls.Add(this.lbListaUsuarios);
             this.Controls.Add(this.tbSenha);
             this.Controls.Add(this.tbUsuario);
             this.Controls.Add(this.tbSistema);
@@ -172,11 +181,11 @@
         private System.Windows.Forms.TextBox tbSistema;
         private System.Windows.Forms.TextBox tbUsuario;
         private System.Windows.Forms.TextBox tbSenha;
-        private System.Windows.Forms.Label lbLog;
-        private System.Windows.Forms.RichTextBox rtbLog;
+        private System.Windows.Forms.Label lbListaUsuarios;
         private System.Windows.Forms.Button btnConectar;
         private System.Windows.Forms.Button btnMensagem;
         private System.Windows.Forms.Button btnGetMensagens;
+        private System.Windows.Forms.ListBox listaUsuarios;
     }
 }
 
