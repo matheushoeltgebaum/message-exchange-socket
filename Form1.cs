@@ -30,7 +30,6 @@ namespace TrabalhoRedes
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //rtbLog.AppendText("Iniciou o programa...\r\n");
             tcpClient = new TcpClient();
             udpClient = new UdpClient();
         }
@@ -41,7 +40,6 @@ namespace TrabalhoRedes
             {
                 ConectarTCP();
 
-                //rtbLog.AppendText("Conectando...\r\n");
                 var serverStream = tcpClient.GetStream();
                 byte[] outStream = Encoding.Default.GetBytes($"GET USERS {Usuario}:{Senha}");
                 serverStream.Write(outStream, 0, outStream.Length);
@@ -52,7 +50,6 @@ namespace TrabalhoRedes
                 string returnData = Encoding.UTF8.GetString(inStream);
 
                 CarregarUsuarios(returnData);
-                //rtbLog.AppendText(returnData + "\r\n\r\n");
             }
             catch (Exception exc)
             {
@@ -63,6 +60,7 @@ namespace TrabalhoRedes
         private void CarregarUsuarios(string data)
         {
             var infoUsuarios = data.Split(':');
+            listaUsuarios.Items.Clear();
 
             for (int i = 0; i < infoUsuarios.Length - 1; i = i + 3)
             {
@@ -70,7 +68,7 @@ namespace TrabalhoRedes
                 var nomeUsuario = infoUsuarios[i + 1];
                 var numeroVitorias = infoUsuarios[i + 2];
 
-                listaUsuarios.Items.Add(nomeUsuario);
+                listaUsuarios.Items.Add($"{idUsuario} - {nomeUsuario}");
             }
         }
 
@@ -78,10 +76,18 @@ namespace TrabalhoRedes
         {
             try
             {
-                ConectarUDP();
-                //rtbLog.AppendText("Enviando mensagem...\r\n");
-                byte[] outStream = Encoding.UTF8.GetBytes($"SEND MESSAGE {Usuario}:{Senha}:0:Hello World!");
-                int result = udpClient.Send(outStream, outStream.Length);
+                MensagemEnviar enviar = new MensagemEnviar();
+                if (enviar.ShowDialog() == DialogResult.OK)
+                {
+                    string idDestinatario = enviar.Para;
+                    if (string.IsNullOrEmpty(enviar.Para))
+                        idDestinatario = "0";
+
+                    ConectarUDP();
+                    byte[] outStream = Encoding.UTF8.GetBytes($"SEND MESSAGE {Usuario}:{Senha}:{idDestinatario}:{enviar.Mensagem}");
+                    int result = udpClient.Send(outStream, outStream.Length);
+                    BuscarMensagens();
+                }
             }
             catch (Exception exc)
             {
@@ -91,10 +97,14 @@ namespace TrabalhoRedes
 
         private void btnGetMensagens_Click(object sender, EventArgs e)
         {
+            BuscarMensagens();
+        }
+        
+        private void BuscarMensagens()
+        {
             try
             {
                 ConectarTCP();
-                //rtbLog.AppendText("Buscando mensagens...\r\n");
                 var serverStream = tcpClient.GetStream();
                 byte[] outStream = Encoding.Default.GetBytes($"GET MESSAGE {Usuario}:{Senha}");
                 serverStream.Write(outStream, 0, outStream.Length);
@@ -103,7 +113,7 @@ namespace TrabalhoRedes
                 byte[] inStream = new byte[tcpClient.ReceiveBufferSize];
                 serverStream.Read(inStream, 0, tcpClient.ReceiveBufferSize);
                 string returnData = Encoding.Default.GetString(inStream);
-                //rtbLog.AppendText(returnData + "\r\n\r\n");
+                tbMensagens.Text = returnData;
             }
             catch (Exception exc)
             {

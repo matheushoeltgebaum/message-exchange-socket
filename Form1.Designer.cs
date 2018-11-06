@@ -39,6 +39,8 @@
             this.btnMensagem = new System.Windows.Forms.Button();
             this.btnGetMensagens = new System.Windows.Forms.Button();
             this.listaUsuarios = new System.Windows.Forms.ListBox();
+            this.tbMensagens = new System.Windows.Forms.TextBox();
+            this.lbMensagens = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lbSistema
@@ -149,11 +151,33 @@
             this.listaUsuarios.Size = new System.Drawing.Size(227, 342);
             this.listaUsuarios.TabIndex = 11;
             // 
+            // tbMensagens
+            // 
+            this.tbMensagens.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbMensagens.Location = new System.Drawing.Point(267, 116);
+            this.tbMensagens.Multiline = true;
+            this.tbMensagens.Name = "tbMensagens";
+            this.tbMensagens.Size = new System.Drawing.Size(627, 342);
+            this.tbMensagens.TabIndex = 12;
+            // 
+            // lbMensagens
+            // 
+            this.lbMensagens.AutoSize = true;
+            this.lbMensagens.Location = new System.Drawing.Point(264, 100);
+            this.lbMensagens.Name = "lbMensagens";
+            this.lbMensagens.Size = new System.Drawing.Size(65, 13);
+            this.lbMensagens.TabIndex = 13;
+            this.lbMensagens.Text = "Mensagens:";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(906, 470);
+            this.Controls.Add(this.lbMensagens);
+            this.Controls.Add(this.tbMensagens);
             this.Controls.Add(this.listaUsuarios);
             this.Controls.Add(this.btnGetMensagens);
             this.Controls.Add(this.btnMensagem);
@@ -186,6 +210,8 @@
         private System.Windows.Forms.Button btnMensagem;
         private System.Windows.Forms.Button btnGetMensagens;
         private System.Windows.Forms.ListBox listaUsuarios;
+        private System.Windows.Forms.TextBox tbMensagens;
+        private System.Windows.Forms.Label lbMensagens;
     }
 }
 
