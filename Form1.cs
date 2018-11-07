@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net.Sockets;
@@ -13,6 +14,8 @@ namespace TrabalhoRedes
 {
     public partial class Form1 : Form
     {
+        private static List<Usuario> UsuariosConectados { get; set; } = new List<Usuario>();
+
         private string Servidor { get { return tbSistema.Text; } }
         private string Usuario { get { return tbUsuario.Text; } } //4936 | 9924
         private string Senha { get { return tbSenha.Text; } } //aswpa | esmtk
@@ -22,6 +25,11 @@ namespace TrabalhoRedes
         private TcpClient tcpClient { get; set; }
 
         private UdpClient udpClient { get; set; }
+
+        private Timer timerBuscaUsuarios { get; set; }
+        private Timer timerBuscaMensagens { get; set; }
+
+        private object LockConexao { get; set; } = new object();
 
         public Form1()
         {
@@ -38,6 +46,42 @@ namespace TrabalhoRedes
         {
             try
             {
+                BuscarUsuarios();
+                timerBuscaUsuarios = new Timer();
+                timerBuscaUsuarios.Interval = 6000;
+                timerBuscaUsuarios.Tick += TimerBuscaUsuarios_Tick;
+
+                timerBuscaMensagens = new Timer();
+                timerBuscaMensagens.Interval = 1000;
+                timerBuscaMensagens.Tick += TimerBuscaMensagens_Tick;
+
+                timerBuscaUsuarios.Start();
+                timerBuscaMensagens.Start();
+
+                btnConectar.Enabled = false;
+            }
+            catch (Exception exc)
+            {
+                //rtbLog.AppendText($"Erro ao conectar: {exc.ToString()}\r\n\r\n");
+            }
+        }
+
+        private void TimerBuscaMensagens_Tick(object sender, EventArgs e)
+        {
+            Invoke((MethodInvoker)(() => { BuscarMensagens(); }));
+        }
+
+        private void TimerBuscaUsuarios_Tick(object sender, EventArgs e)
+        {
+            Invoke((MethodInvoker)(() => { BuscarUsuarios(); }));
+        }
+
+        private void BuscarUsuarios()
+        {
+            Debug.WriteLine("Buscou usuários...");
+
+            lock (LockConexao)
+            {
                 ConectarTCP();
 
                 var serverStream = tcpClient.GetStream();
@@ -48,12 +92,8 @@ namespace TrabalhoRedes
                 byte[] inStream = new byte[tcpClient.ReceiveBufferSize];
                 serverStream.Read(inStream, 0, tcpClient.ReceiveBufferSize);
                 string returnData = Encoding.UTF8.GetString(inStream);
-
+            
                 CarregarUsuarios(returnData);
-            }
-            catch (Exception exc)
-            {
-                //rtbLog.AppendText($"Erro ao conectar: {exc.ToString()}\r\n\r\n");
             }
         }
 
@@ -61,6 +101,7 @@ namespace TrabalhoRedes
         {
             var infoUsuarios = data.Split(':');
             listaUsuarios.Items.Clear();
+            UsuariosConectados.Clear();
 
             for (int i = 0; i < infoUsuarios.Length - 1; i = i + 3)
             {
@@ -68,8 +109,10 @@ namespace TrabalhoRedes
                 var nomeUsuario = infoUsuarios[i + 1];
                 var numeroVitorias = infoUsuarios[i + 2];
 
-                listaUsuarios.Items.Add($"{idUsuario} - {nomeUsuario}");
+                UsuariosConectados.Add(new Usuario { Id = idUsuario, Nome = nomeUsuario, NumeroVitorias = numeroVitorias });
             }
+
+            UsuariosConectados.ForEach(usuario => listaUsuarios.Items.Add(usuario));
         }
 
         private void btnMensagem_Click(object sender, EventArgs e)
@@ -104,16 +147,19 @@ namespace TrabalhoRedes
         {
             try
             {
-                ConectarTCP();
-                var serverStream = tcpClient.GetStream();
-                byte[] outStream = Encoding.Default.GetBytes($"GET MESSAGE {Usuario}:{Senha}");
-                serverStream.Write(outStream, 0, outStream.Length);
-                serverStream.Flush();
+                lock (LockConexao)
+                {
+                    ConectarTCP();
+                    var serverStream = tcpClient.GetStream();
+                    byte[] outStream = Encoding.Default.GetBytes($"GET MESSAGE {Usuario}:{Senha}");
+                    serverStream.Write(outStream, 0, outStream.Length);
+                    serverStream.Flush();
 
-                byte[] inStream = new byte[tcpClient.ReceiveBufferSize];
-                serverStream.Read(inStream, 0, tcpClient.ReceiveBufferSize);
-                string returnData = Encoding.Default.GetString(inStream);
-                tbMensagens.Text = returnData;
+                    byte[] inStream = new byte[tcpClient.ReceiveBufferSize];
+                    serverStream.Read(inStream, 0, tcpClient.ReceiveBufferSize);
+                    string returnData = Encoding.Default.GetString(inStream);
+                    tbMensagens.Text += returnData;
+                }
             }
             catch (Exception exc)
             {
@@ -155,6 +201,19 @@ namespace TrabalhoRedes
                 tcpClient.Close();
                 ConectadoUDP = false;
             }
+        }
+
+        private void btnViewAll_Click(object sender, EventArgs e)
+        {
+            listaUsuarios.ClearSelected();
+        }
+
+        private void listaUsuarios_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listaUsuarios.SelectedIndex == -1)
+                tbMensagens.Text = "Todos";
+            else
+                tbMensagens.Text = listaUsuarios.SelectedIndex.ToString();
         }
     }
 }

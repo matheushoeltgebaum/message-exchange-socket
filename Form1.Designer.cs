@@ -41,6 +41,7 @@
             this.listaUsuarios = new System.Windows.Forms.ListBox();
             this.tbMensagens = new System.Windows.Forms.TextBox();
             this.lbMensagens = new System.Windows.Forms.Label();
+            this.btnViewAll = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbSistema
@@ -148,8 +149,9 @@
             this.listaUsuarios.FormattingEnabled = true;
             this.listaUsuarios.Location = new System.Drawing.Point(15, 116);
             this.listaUsuarios.Name = "listaUsuarios";
-            this.listaUsuarios.Size = new System.Drawing.Size(227, 342);
+            this.listaUsuarios.Size = new System.Drawing.Size(227, 316);
             this.listaUsuarios.TabIndex = 11;
+            this.listaUsuarios.SelectedIndexChanged += new System.EventHandler(this.listaUsuarios_SelectedIndexChanged);
             // 
             // tbMensagens
             // 
@@ -171,11 +173,22 @@
             this.lbMensagens.TabIndex = 13;
             this.lbMensagens.Text = "Mensagens:";
             // 
+            // btnViewAll
+            // 
+            this.btnViewAll.Location = new System.Drawing.Point(15, 435);
+            this.btnViewAll.Name = "btnViewAll";
+            this.btnViewAll.Size = new System.Drawing.Size(95, 23);
+            this.btnViewAll.TabIndex = 14;
+            this.btnViewAll.Text = "Visualizar todos";
+            this.btnViewAll.UseVisualStyleBackColor = true;
+            this.btnViewAll.Click += new System.EventHandler(this.btnViewAll_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(906, 470);
+            this.Controls.Add(this.btnViewAll);
             this.Controls.Add(this.lbMensagens);
             this.Controls.Add(this.tbMensagens);
             this.Controls.Add(this.listaUsuarios);
@@ -212,6 +225,7 @@
         private System.Windows.Forms.ListBox listaUsuarios;
         private System.Windows.Forms.TextBox tbMensagens;
         private System.Windows.Forms.Label lbMensagens;
+        private System.Windows.Forms.Button btnViewAll;
     }
 }
 
