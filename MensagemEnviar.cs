@@ -1,28 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TrabalhoRedes
 {
     public partial class MensagemEnviar : Form
     {
-        public string Para { get { return tbPara.Text; } }
+        private List<Usuario> Usuarios { get; set; }
+        public string Para
+        {
+            get
+            {
+                if (cbPara.SelectedItem != null && cbPara.SelectedItem is Usuario)
+                    return (cbPara.SelectedItem as Usuario).Id;
+
+                return "0";
+            }
+        }
         public string Mensagem { get { return tbMensagem.Text; } }
 
-        public MensagemEnviar()
+        public MensagemEnviar(List<Usuario> usuarios)
         {
             InitializeComponent();
+            Usuarios = usuarios;
         }
 
         private void btnEnviar_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
+        }
+
+        private void MensagemEnviar_Load(object sender, EventArgs e)
+        {
+            cbPara.Items.AddRange(Usuarios.ToArray());
+            cbPara.Items.Add(new Usuario { Id = "0", Nome = "TODOS", NumeroVitorias = "0" });
         }
     }
 }

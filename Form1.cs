@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TrabalhoRedes
@@ -23,7 +17,6 @@ namespace TrabalhoRedes
         private bool ConectadoUDP { get; set; } = false;
 
         private TcpClient tcpClient { get; set; }
-
         private UdpClient udpClient { get; set; }
 
         private Timer timerBuscaUsuarios { get; set; }
@@ -58,12 +51,24 @@ namespace TrabalhoRedes
                 timerBuscaUsuarios.Start();
                 timerBuscaMensagens.Start();
 
-                btnConectar.Enabled = false;
+                HabilitarCampos(true);
             }
             catch (Exception exc)
             {
-                //rtbLog.AppendText($"Erro ao conectar: {exc.ToString()}\r\n\r\n");
+                MessageBox.Show($"Erro ao conectar: {exc.Message}\r\n\r\n");
             }
+        }
+
+        private void HabilitarCampos(bool conectado)
+        {
+            btnConectar.Enabled = !conectado;
+            tbUsuario.Enabled = !conectado;
+            tbSenha.Enabled = !conectado;
+
+            btnMensagem.Enabled = conectado;
+            tbMensagens.Enabled = conectado;
+            listaUsuarios.Enabled = conectado;
+            btnViewAll.Enabled = conectado;
         }
 
         private void TimerBuscaMensagens_Tick(object sender, EventArgs e)
@@ -78,22 +83,28 @@ namespace TrabalhoRedes
 
         private void BuscarUsuarios()
         {
-            Debug.WriteLine("Buscou usuários...");
-
-            lock (LockConexao)
+            try
             {
-                ConectarTCP();
+                lock (LockConexao)
+                {
+                    ConectarTCP();
 
-                var serverStream = tcpClient.GetStream();
-                byte[] outStream = Encoding.Default.GetBytes($"GET USERS {Usuario}:{Senha}");
-                serverStream.Write(outStream, 0, outStream.Length);
-                serverStream.Flush();
+                    var serverStream = tcpClient.GetStream();
+                    byte[] outStream = Encoding.Default.GetBytes($"GET USERS {Usuario}:{Senha}");
+                    serverStream.Write(outStream, 0, outStream.Length);
+                    serverStream.Flush();
 
-                byte[] inStream = new byte[tcpClient.ReceiveBufferSize];
-                serverStream.Read(inStream, 0, tcpClient.ReceiveBufferSize);
-                string returnData = Encoding.UTF8.GetString(inStream);
-            
-                CarregarUsuarios(returnData);
+                    byte[] inStream = new byte[tcpClient.ReceiveBufferSize];
+                    serverStream.Read(inStream, 0, tcpClient.ReceiveBufferSize);
+                    string returnData = Encoding.UTF8.GetString(inStream);
+
+                    CarregarUsuarios(returnData);
+                }
+            }
+            catch
+            {
+                if (!ConectadoTCP)
+                    throw;
             }
         }
 
@@ -109,7 +120,8 @@ namespace TrabalhoRedes
                 var nomeUsuario = infoUsuarios[i + 1];
                 var numeroVitorias = infoUsuarios[i + 2];
 
-                UsuariosConectados.Add(new Usuario { Id = idUsuario, Nome = nomeUsuario, NumeroVitorias = numeroVitorias });
+                if (!idUsuario.Equals(Usuario))
+                    UsuariosConectados.Add(new Usuario { Id = idUsuario, Nome = nomeUsuario, NumeroVitorias = numeroVitorias });
             }
 
             UsuariosConectados.ForEach(usuario => listaUsuarios.Items.Add(usuario));
@@ -119,7 +131,7 @@ namespace TrabalhoRedes
         {
             try
             {
-                MensagemEnviar enviar = new MensagemEnviar();
+                MensagemEnviar enviar = new MensagemEnviar(UsuariosConectados);
                 if (enviar.ShowDialog() == DialogResult.OK)
                 {
                     string idDestinatario = enviar.Para;
@@ -134,7 +146,7 @@ namespace TrabalhoRedes
             }
             catch (Exception exc)
             {
-                //rtbLog.AppendText($"Erro ao enviar mensagem: {exc.ToString()}\r\n\r\n");
+                MessageBox.Show($"Erro ao enviar mensagem: {exc.Message}\r\n\r\n");
             }
         }
 
@@ -142,7 +154,7 @@ namespace TrabalhoRedes
         {
             BuscarMensagens();
         }
-        
+
         private void BuscarMensagens()
         {
             try
@@ -163,7 +175,7 @@ namespace TrabalhoRedes
             }
             catch (Exception exc)
             {
-                //rtbLog.AppendText($"Erro ao buscar mensagens: {exc.ToString()}\r\n\r\n");
+                MessageBox.Show($"Erro ao buscar mensagens: {exc.Message}\r\n\r\n");
             }
         }
 

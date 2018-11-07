@@ -37,7 +37,6 @@
             this.lbListaUsuarios = new System.Windows.Forms.Label();
             this.btnConectar = new System.Windows.Forms.Button();
             this.btnMensagem = new System.Windows.Forms.Button();
-            this.btnGetMensagens = new System.Windows.Forms.Button();
             this.listaUsuarios = new System.Windows.Forms.ListBox();
             this.tbMensagens = new System.Windows.Forms.TextBox();
             this.lbMensagens = new System.Windows.Forms.Label();
@@ -75,6 +74,7 @@
             // 
             this.tbSistema.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbSistema.Enabled = false;
             this.tbSistema.Location = new System.Drawing.Point(65, 12);
             this.tbSistema.Name = "tbSistema";
             this.tbSistema.Size = new System.Drawing.Size(829, 20);
@@ -124,8 +124,9 @@
             // 
             // btnMensagem
             // 
-            this.btnMensagem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnMensagem.Location = new System.Drawing.Point(685, 90);
+            this.btnMensagem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnMensagem.Enabled = false;
+            this.btnMensagem.Location = new System.Drawing.Point(819, 438);
             this.btnMensagem.Name = "btnMensagem";
             this.btnMensagem.Size = new System.Drawing.Size(75, 23);
             this.btnMensagem.TabIndex = 9;
@@ -133,19 +134,11 @@
             this.btnMensagem.UseVisualStyleBackColor = true;
             this.btnMensagem.Click += new System.EventHandler(this.btnMensagem_Click);
             // 
-            // btnGetMensagens
-            // 
-            this.btnGetMensagens.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGetMensagens.Location = new System.Drawing.Point(604, 90);
-            this.btnGetMensagens.Name = "btnGetMensagens";
-            this.btnGetMensagens.Size = new System.Drawing.Size(75, 23);
-            this.btnGetMensagens.TabIndex = 10;
-            this.btnGetMensagens.Text = "Busca msg";
-            this.btnGetMensagens.UseVisualStyleBackColor = true;
-            this.btnGetMensagens.Click += new System.EventHandler(this.btnGetMensagens_Click);
-            // 
             // listaUsuarios
             // 
+            this.listaUsuarios.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.listaUsuarios.Enabled = false;
             this.listaUsuarios.FormattingEnabled = true;
             this.listaUsuarios.Location = new System.Drawing.Point(15, 116);
             this.listaUsuarios.Name = "listaUsuarios";
@@ -158,10 +151,12 @@
             this.tbMensagens.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbMensagens.Enabled = false;
             this.tbMensagens.Location = new System.Drawing.Point(267, 116);
             this.tbMensagens.Multiline = true;
             this.tbMensagens.Name = "tbMensagens";
-            this.tbMensagens.Size = new System.Drawing.Size(627, 342);
+            this.tbMensagens.ReadOnly = true;
+            this.tbMensagens.Size = new System.Drawing.Size(627, 316);
             this.tbMensagens.TabIndex = 12;
             // 
             // lbMensagens
@@ -175,11 +170,13 @@
             // 
             // btnViewAll
             // 
+            this.btnViewAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnViewAll.Enabled = false;
             this.btnViewAll.Location = new System.Drawing.Point(15, 435);
             this.btnViewAll.Name = "btnViewAll";
-            this.btnViewAll.Size = new System.Drawing.Size(95, 23);
+            this.btnViewAll.Size = new System.Drawing.Size(227, 23);
             this.btnViewAll.TabIndex = 14;
-            this.btnViewAll.Text = "Visualizar todos";
+            this.btnViewAll.Text = "Visualizar mensagens de todos";
             this.btnViewAll.UseVisualStyleBackColor = true;
             this.btnViewAll.Click += new System.EventHandler(this.btnViewAll_Click);
             // 
@@ -192,7 +189,6 @@
             this.Controls.Add(this.lbMensagens);
             this.Controls.Add(this.tbMensagens);
             this.Controls.Add(this.listaUsuarios);
-            this.Controls.Add(this.btnGetMensagens);
             this.Controls.Add(this.btnMensagem);
             this.Controls.Add(this.btnConectar);
             this.Controls.Add(this.lbListaUsuarios);
@@ -203,7 +199,7 @@
             this.Controls.Add(this.lbUsuario);
             this.Controls.Add(this.lbSistema);
             this.Name = "Form1";
-            this.Text = "Programa de testes";
+            this.Text = "Chat - Trabalho de Redes";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -221,7 +217,6 @@
         private System.Windows.Forms.Label lbListaUsuarios;
         private System.Windows.Forms.Button btnConectar;
         private System.Windows.Forms.Button btnMensagem;
-        private System.Windows.Forms.Button btnGetMensagens;
         private System.Windows.Forms.ListBox listaUsuarios;
         private System.Windows.Forms.TextBox tbMensagens;
         private System.Windows.Forms.Label lbMensagens;
