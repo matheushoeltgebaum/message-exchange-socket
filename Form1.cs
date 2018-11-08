@@ -154,7 +154,7 @@ namespace TrabalhoRedes
                     ConectarUDP();
                     byte[] outStream = Encoding.UTF8.GetBytes($"SEND MESSAGE {Usuario}:{Senha}:{idDestinatario}:{enviar.Mensagem}");
                     int result = udpClient.Send(outStream, outStream.Length);
-                    Mensagens.Add(new Mensagem { Remetente = CurrentUser.Id, Destinatario = idDestinatario, Conteudo = enviar.Mensagem, Minha = true });
+                    Mensagens.Add(new Mensagem { Remetente = Usuario, Destinatario = idDestinatario, Conteudo = enviar.Mensagem, Minha = true });
                     //if (IsConversaAberta(idDestinatario))
                     //    rtbMensagens.Text += $"[Você]: {enviar.Mensagem}" + "\r\n";
                     BuscarMensagens();

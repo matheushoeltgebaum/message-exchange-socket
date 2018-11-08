@@ -34,6 +34,8 @@ namespace TrabalhoRedes
         {
             cbPara.Items.AddRange(Usuarios.ToArray());
             cbPara.Items.Add(new Usuario { Id = "0", Nome = "TODOS", NumeroVitorias = "0" });
+
+            cbPara.SelectedIndex = cbPara.Items.Count - 1;
         }
     }
 }
