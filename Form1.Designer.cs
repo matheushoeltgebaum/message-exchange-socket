@@ -38,9 +38,9 @@
             this.btnConectar = new System.Windows.Forms.Button();
             this.btnMensagem = new System.Windows.Forms.Button();
             this.listaUsuarios = new System.Windows.Forms.ListBox();
-            this.tbMensagens = new System.Windows.Forms.TextBox();
             this.lbMensagens = new System.Windows.Forms.Label();
             this.btnViewAll = new System.Windows.Forms.Button();
+            this.rtbMensagens = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // lbSistema
@@ -146,19 +146,6 @@
             this.listaUsuarios.TabIndex = 11;
             this.listaUsuarios.SelectedIndexChanged += new System.EventHandler(this.listaUsuarios_SelectedIndexChanged);
             // 
-            // tbMensagens
-            // 
-            this.tbMensagens.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbMensagens.Enabled = false;
-            this.tbMensagens.Location = new System.Drawing.Point(267, 116);
-            this.tbMensagens.Multiline = true;
-            this.tbMensagens.Name = "tbMensagens";
-            this.tbMensagens.ReadOnly = true;
-            this.tbMensagens.Size = new System.Drawing.Size(627, 316);
-            this.tbMensagens.TabIndex = 12;
-            // 
             // lbMensagens
             // 
             this.lbMensagens.AutoSize = true;
@@ -180,14 +167,28 @@
             this.btnViewAll.UseVisualStyleBackColor = true;
             this.btnViewAll.Click += new System.EventHandler(this.btnViewAll_Click);
             // 
+            // rtbMensagens
+            // 
+            this.rtbMensagens.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbMensagens.Enabled = false;
+            this.rtbMensagens.Location = new System.Drawing.Point(267, 116);
+            this.rtbMensagens.Name = "rtbMensagens";
+            this.rtbMensagens.ReadOnly = true;
+            this.rtbMensagens.Size = new System.Drawing.Size(627, 316);
+            this.rtbMensagens.TabIndex = 15;
+            this.rtbMensagens.Text = "";
+            this.rtbMensagens.TextChanged += new System.EventHandler(this.rtbMensagens_TextChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(906, 470);
+            this.Controls.Add(this.rtbMensagens);
             this.Controls.Add(this.btnViewAll);
             this.Controls.Add(this.lbMensagens);
-            this.Controls.Add(this.tbMensagens);
             this.Controls.Add(this.listaUsuarios);
             this.Controls.Add(this.btnMensagem);
             this.Controls.Add(this.btnConectar);
@@ -218,9 +219,9 @@
         private System.Windows.Forms.Button btnConectar;
         private System.Windows.Forms.Button btnMensagem;
         private System.Windows.Forms.ListBox listaUsuarios;
-        private System.Windows.Forms.TextBox tbMensagens;
         private System.Windows.Forms.Label lbMensagens;
         private System.Windows.Forms.Button btnViewAll;
+        private System.Windows.Forms.RichTextBox rtbMensagens;
     }
 }
 
