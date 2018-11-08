@@ -11,5 +11,6 @@ namespace TrabalhoRedes
         public string Remetente { get; set; }
         public string Destinatario { get; set; }
         public string Conteudo { get; set; }
+        public bool Minha { get; set; }
     }
 }

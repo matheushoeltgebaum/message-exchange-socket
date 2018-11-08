@@ -154,9 +154,9 @@ namespace TrabalhoRedes
                     ConectarUDP();
                     byte[] outStream = Encoding.UTF8.GetBytes($"SEND MESSAGE {Usuario}:{Senha}:{idDestinatario}:{enviar.Mensagem}");
                     int result = udpClient.Send(outStream, outStream.Length);
-                    Mensagens.Add(new Mensagem { Remetente = CurrentUser.Id, Destinatario = idDestinatario, Conteudo = enviar.Mensagem });
-                    if (IsConversaAberta(idDestinatario))
-                        rtbMensagens.Text += $"[Você]: {enviar.Mensagem}" + "\r\n";
+                    Mensagens.Add(new Mensagem { Remetente = CurrentUser.Id, Destinatario = idDestinatario, Conteudo = enviar.Mensagem, Minha = true });
+                    //if (IsConversaAberta(idDestinatario))
+                    //    rtbMensagens.Text += $"[Você]: {enviar.Mensagem}" + "\r\n";
                     BuscarMensagens();
                 }
             }
@@ -289,7 +289,7 @@ namespace TrabalhoRedes
             foreach (var mensagem in Mensagens.Where(msg => msg.Destinatario == "0" || msg.Remetente == "0"))
             {
                 var infoRemetente = UsuariosConectados.FirstOrDefault(user => user.Id.Equals(mensagem.Remetente));
-                rtbMensagens.Text += $"[{(infoRemetente?.Nome == null ? "Servidor" : infoRemetente.Nome)}]: {mensagem.Conteudo}" + "\r\n";
+                rtbMensagens.Text += $"[{(infoRemetente?.Nome == null ? (mensagem.Minha ? "Você" : "Servidor") : infoRemetente.Nome)}]: {mensagem.Conteudo}" + "\r\n";
             }
         }
 
